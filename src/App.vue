@@ -68,8 +68,8 @@
           for (let d in labels) {
             sets.push({
               label: d,
-              backgroundColor: d == '07d464' ? '#0000ff' : '#00ff00',
-              borderColor: d == '07d464' ? '#0000ff' : '#00ff00',
+              backgroundColor: d == '07d464' ? '#ffc36c' : '#5898ff',
+              borderColor: d == '07d464' ? '#ffc36c' : '#5898ff',
               data: nums[d],
               fill: false,
             })
@@ -86,7 +86,7 @@
               responsive: true,
               title: {
                 display: true,
-                text: 'Chart.js Line Chart'
+                text: 'GoGarden - DS18B20'
               },
               tooltips: {
                 mode: null,
