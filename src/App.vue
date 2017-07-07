@@ -30,9 +30,13 @@
     },
     methods: {
       render() {
+
+
+        let time = 1499394000
+        let interval = 60
         Promise.all([
-          axios.get('http://192.168.1.6:4422/data?type=DS18B20&device=07d464&interval=300&start=2017-01-01'),
-          axios.get('http://192.168.1.6:4422/data?type=DS18B20&device=26f902&interval=300&start=2017-01-01'),
+          axios.get(`http://192.168.1.6:4422/data?type=DS18B20&device=07d464&interval=${interval}&start=${time}`),
+          axios.get(`http://192.168.1.6:4422/data?type=DS18B20&device=26f902&interval=${interval}&start=${time}`),
 
         ]).then((resps) => {
           let ctx = document.getElementById("myChart").getContext('2d');
@@ -41,24 +45,33 @@
           let lbls = []
           let nums = {}
 
+          let names = {
+            0: "07d464",
+            1: "ffc36c"
+          }
+
           for (const r in resps) {
-
-
             let resp = resps[r]
 
-            labels[resp.data[0].device] = []
-            nums[resp.data[0].device] = []
+            let name = names[r]
+
+            labels[name] = []
+            nums[name] = []
 
             for (const d in resp.data) {
               let e = resp.data[d];
-              let m = moment(e.date, "YYYY-MM-DD HH:mm:ss").format("HH:mm")
+              let m = moment.unix(e.Timestamp).format("HH:mm")
 
               if (r == 0) {
                 lbls.push(m)
               }
 
-              labels[e.device].push(m)
-              nums[e.device].push(e.avg)
+              labels[name].push(m)
+              if(e.Count > 0) {
+                nums[name].push(e.Avg)
+              } else {
+                nums[name].push(null)
+              }
             }
 
           }
@@ -133,9 +146,9 @@
     color: #2c3e50
     margin-top: 60px
 
-    .main
-      width: 100%
-      max-height: 400px
-      padding: 20px
+  .main
+    width: 100%
+    max-height: 100%;
+    padding: 20px
 
 </style>
